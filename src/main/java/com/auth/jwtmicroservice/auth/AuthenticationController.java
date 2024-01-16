@@ -23,9 +23,6 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
         AuthenticationResponse response = service.register(request);
-        System.out.println(request.getEmail());
-        System.out.println(request.getPassword());
-        System.out.println(request.getRole());
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, response.getToken()).body(null);
     }
 
