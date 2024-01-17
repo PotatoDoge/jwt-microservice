@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  backend:
+    build: .
+    container_name: jwt-ms
+    image: jwt-microservice
+    ports:
+      - 8080:8080
+    environment:
+      - db-url=jdbc:postgresql://postgres-central-db:5432/central_database
+      - db-username=postgres
+      - db-password=postgres
+    depends_on:
+      - db
+    restart: always
+  db:
+    ports:
+      - 5432:5432
+    container_name: postgres-central-db
+    image: postgres:12
+    environment:
+      - POSTGRES_DB=central_database
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    volumes:
+      - /var/lib/docker/volumes/fb2f61bb4d5eccf412cf8eab394df7e54c960626c6eb8373630ddcf9a4820077/_data:/var/lib/postgresql/data
+    restart: always
