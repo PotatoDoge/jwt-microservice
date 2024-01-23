@@ -1,7 +1,7 @@
 
 # JWT Generator
 
-Microserivce that is in charge of generating jwts for valid users, as well as registering new users.
+Microservice that is in charge of generating jwts for valid users, as well as registering new users.
 
 Keypoints:
 - Authorization
@@ -13,7 +13,7 @@ Keypoints:
 
 What you will need:
 - Java 17
-- Postrgres database running (username, password and connection url are set in the application.yml file)
+- PostgreSQL database running (username, password and connection url are set in the application.yml file)
 
 Clone the project
 
