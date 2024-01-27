@@ -6,7 +6,7 @@ services:
     container_name: jwt-ms
     image: jwt-microservice
     ports:
-      - 8080:8080
+      - "8080:8080"
     environment:
       - db-url=jdbc:postgresql://postgres-central-db:5432/central_database
       - db-username=postgres
@@ -16,7 +16,7 @@ services:
     restart: always
   db:
     ports:
-      - 5432:5432
+      - "5432:5432"
     container_name: postgres-central-db
     image: postgres:12
     environment:
@@ -25,4 +25,16 @@ services:
       - POSTGRES_USER=postgres
     volumes:
       - /var/lib/docker/volumes/fb2f61bb4d5eccf412cf8eab394df7e54c960626c6eb8373630ddcf9a4820077/_data:/var/lib/postgresql/data
+    restart: always
+  ingredient-ms:
+    container_name: ingredients-ms
+    build:
+      context: ../ingredients-microservice  # Specify the path to the directory containing the Dockerfile
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"  # Adjust the port mapping as needed
+    environment:
+      - db-url=jdbc:postgresql://postgres-central-db:5432/central_database
+      - db-username=postgres
+      - db-password=postgres
     restart: always
