@@ -79,7 +79,7 @@ Run spring boot application
 
 ## Docker
 
-If you want to run this app in a docker container (assuming that Docker is running in your machine), follow these steps:
+If you want to run this app using Docker (assuming that Docker is running in your machine), follow these steps:
 
 - Go to project's directory
 
