@@ -76,11 +76,19 @@ Run spring boot application
 *This request will return a message like "Hello world from secure endpoint"*
 
 
+
 ## Docker
 
 If you want to run this app in a docker container (assuming that Docker is running in your machine), follow these steps:
 
-- Set the working directory to the project's root directory
+- Go to project's directory
+
+      cd jwt-microservice
+
+- Run the following command (Note: project's database must be running for this to run properly. You can run the following docker commands to run the database, and then come back here and continue, and after this, run the docker commands again).
+
+      ./mvnw clean install
+
 - Run the following commands:
 
       docker volume create auth-ms-volume
