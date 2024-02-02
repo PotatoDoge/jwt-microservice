@@ -110,3 +110,4 @@ This microservice is based on the following template: https://github.com/PotatoD
 - Springboot Security 6
 - Java 17
 - Json Web Token (JWT)
+- Docker
