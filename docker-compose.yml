@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  backend:
+  jwt-user-auth:
     build: .
     container_name: jwt-ms
     image: jwt-microservice
@@ -26,3 +26,7 @@ services:
     volumes:
       - /var/lib/docker/volumes/fb2f61bb4d5eccf412cf8eab394df7e54c960626c6eb8373630ddcf9a4820077/_data:/var/lib/postgresql/data
     restart: always
+networks:
+  default:
+    name: app-ms
+    external: true
