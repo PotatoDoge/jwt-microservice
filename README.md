@@ -12,8 +12,7 @@ Keypoints:
 ## Run Locally
 
 What you will need:
-- Java 17
-- PostgreSQL database running (username, password and connection url are set in the application.yml file)
+- Docker (active)
 
 Clone the project
 
@@ -33,7 +32,14 @@ Run spring boot application
   ./mvnw spring-boot:run
 ```
 
-
+Run the following commands:
+```bash
+    docker volume create auth-ms-volume
+    docker-compose build --no-cache
+    docker-compose up -d
+```
+- This command will create containers for both the database and the jwt microservice
+- 8080 and 5432 (or your own specified ports) must be free in order for this to run correctly
 
 ## Usage/Examples
 
@@ -75,28 +81,6 @@ Run spring boot application
 
 *This request will return a message like "Hello world from secure endpoint"*
 
-
-
-## Docker
-
-If you want to run this app using Docker (assuming that Docker is running in your machine), follow these steps:
-
-- Go to project's directory
-
-      cd jwt-microservice
-
-- Run the following command (Note: project's database must be running for this to run properly. You can run the following docker commands to run the database, and then come back here and continue, and after this, run the docker commands again).
-
-      ./mvnw clean install
-
-- Run the following commands:
-
-      docker volume create auth-ms-volume
-      docker-compose build --no-cache
-      docker-compose up -d
-
-- This command will create containers for both the database and the jwt microservice
-- 8080 and 5432 (or your own specified ports) must be free in order for this to run correctly
 ## Authors
 
 - [@PotatoDoge](https://github.com/PotatoDoge)
@@ -108,6 +92,6 @@ This microservice is based on the following template: https://github.com/PotatoD
 ## Tags
 - Springboot 3
 - Springboot Security 6
-- Java 17
+- Java
 - Json Web Token (JWT)
 - Docker
