@@ -24,7 +24,7 @@ public class AuthenticationService {
      * @return jwt based on new user
      */
     public AuthenticationResponse register(RegisterRequest request){
-        User user = new User(request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getRole());
+        User user = new User(request.getFullName(), request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getRole());
         repository.save(user);
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);

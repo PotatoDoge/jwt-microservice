@@ -21,6 +21,8 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
+    private String fullName;
+
     private String email;
 
     private String password;
@@ -28,7 +30,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String email, String password, Role role){
+    public User(String fullName, String email, String password, Role role){
+        this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.role = role;
