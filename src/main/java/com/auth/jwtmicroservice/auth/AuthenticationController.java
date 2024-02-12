@@ -32,7 +32,11 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         AuthenticationResponse response = service.authenticate(request);
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, response.getToken()).body(null);
+        HttpHeaders headers = new HttpHeaders();
+        //headers.add(HttpHeaders.AUTHORIZATION, response.getToken());
+        //headers.add("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        //return ResponseEntity.ok().headers(headers).body(null);
+        return ResponseEntity.ok(response);
     }
 
 }
