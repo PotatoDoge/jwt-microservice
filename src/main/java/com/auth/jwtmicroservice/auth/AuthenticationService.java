@@ -3,6 +3,7 @@ package com.auth.jwtmicroservice.auth;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;
+import com.auth.jwtmicroservice.response.exception.ValueExistsInDatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,6 +26,10 @@ public class AuthenticationService {
      */
     public AuthenticationResponse register(RegisterRequest request){
         User user = new User(request.getFullName(), request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getRole());
+        boolean emailAlreadyRegister = repository.existsByEmail(request.getEmail());
+        if(emailAlreadyRegister){
+            throw new ValueExistsInDatabase("Email already registered!");
+        }
         repository.save(user);
         String token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
