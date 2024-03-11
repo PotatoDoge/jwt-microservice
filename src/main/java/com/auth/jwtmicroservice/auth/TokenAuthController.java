@@ -19,11 +19,9 @@ public class TokenAuthController {
     @GetMapping("/authenticate")
     public ResponseEntity<AuthResponse> validateToken(@RequestHeader("Authorization") String token){
         String jwt = token.substring(7);
-        System.out.println("jwt: " + jwt);
         AuthResponse user = new AuthResponse();
         user.setId(Long.valueOf(jwtService.extractUserId(jwt)));
         user.setEmail(jwtService.extractUsername(jwt));
-        System.out.println("Response: " + user);
         return ResponseEntity.ok().body(user);
     }
 }
