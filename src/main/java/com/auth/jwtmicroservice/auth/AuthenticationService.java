@@ -31,7 +31,7 @@ public class AuthenticationService {
             throw new ValueExistsInDatabase("Email already registered!");
         }
         repository.save(user);
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken(user, user.getId());
         return new AuthenticationResponse(token);
     }
 
@@ -43,7 +43,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         User user = repository.findByEmail(request.getEmail()).orElseThrow();
-        String token = jwtService.generateToken(user);
+        String token = jwtService.generateToken(user, user.getId());
         return new AuthenticationResponse(token);
     }
 
