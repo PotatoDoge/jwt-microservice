@@ -47,4 +47,12 @@ public class AuthenticationService {
         return new AuthenticationResponse(token);
     }
 
+    public String getFullName(String email){
+        User user = repository.findByEmail(email).orElse(null);
+        if(user == null){
+            return "";
+        }
+        return user.getFullName();
+    }
+
 }

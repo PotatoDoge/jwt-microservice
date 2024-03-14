@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.*;
 public class TokenAuthController {
 
     private JwtService jwtService;
+    private AuthenticationService authenticationService;
 
     @GetMapping("/authenticate")
     public ResponseEntity<AuthResponse> validateToken(@RequestHeader("Authorization") String token){
         String jwt = token.substring(7);
         AuthResponse user = new AuthResponse();
+        String email = jwtService.extractUsername(jwt);
         user.setId(Long.valueOf(jwtService.extractUserId(jwt)));
-        user.setEmail(jwtService.extractUsername(jwt));
+        user.setFullName(authenticationService.getFullName(email));
+        user.setEmail(email);
         return ResponseEntity.ok().body(user);
     }
 }
