@@ -13,6 +13,17 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your_email_address
+    password: your_email_password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   address: your_ip_address
   servlet:
@@ -24,3 +35,4 @@ jwt:
 account:
   email:
     validation: false
+  validation-token-duration-in-minutes: 10
