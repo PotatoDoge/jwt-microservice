@@ -1,5 +1,6 @@
 package com.auth.jwtmicroservice.auth;
 
+import com.auth.jwtmicroservice.config.AccountConfigProperties;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
 import com.auth.jwtmicroservice.entity.User;
@@ -28,12 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    @Value("${account.email.validation}")
-    private boolean sendEmailValidation;
-
-    @Value("${account.validation-token-duration-in-minutes}")
-    private int validationTokenDurationInMinutes;
-
+    private final AccountConfigProperties accountConfigProperties;
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -55,7 +51,7 @@ public class AuthenticationService {
         }
 
         //Confirmation token disabled
-        if (!sendEmailValidation) {
+        if (!accountConfigProperties.isEmailValidation()) {
             user.setEnabled(true);
             repository.save(user);
             return;
@@ -136,7 +132,7 @@ public class AuthenticationService {
 
     private void sendToken(User user){
         String confToken = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(validationTokenDurationInMinutes), user);
+        ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(accountConfigProperties.getValidationTokenDurationInMinutes()), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         // Send confirmation token via email
