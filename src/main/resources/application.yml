@@ -36,3 +36,7 @@ account:
   email:
     validation: false
   validation-token-duration-in-minutes: 10
+
+frontend:
+  token-validation: your_frontend_url
+  redirect: false #if true, this will redirect you to your frontend specified page

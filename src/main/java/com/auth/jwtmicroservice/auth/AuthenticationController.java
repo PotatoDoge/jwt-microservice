@@ -1,15 +1,22 @@
 package com.auth.jwtmicroservice.auth;
 
+import com.auth.jwtmicroservice.config.FrontendConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
 @CrossOrigin
 public class AuthenticationController {
+
+    private final FrontendConfigProperties frontendConfigProperties;
 
     private final AuthenticationService service;
 
@@ -36,8 +43,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("activateAccount/{token}")
-    public ResponseEntity<String> activateAccount(@PathVariable String token){
-        return ResponseEntity.ok(service.activateAccount(token));
+    public ResponseEntity<Void> activateAccount(@PathVariable String token){
+        String confirmationTokenResponse = service.activateAccount(token);
+        String redirectTo = frontendConfigProperties.getTokenValidationScreen() + "?confirmation-message="+ confirmationTokenResponse;
+        redirectTo = service.encodeUri(redirectTo);
+        return ResponseEntity.status(HttpStatus.FOUND).header("Location", redirectTo).build();
     }
 
 }

@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -138,5 +141,9 @@ public class AuthenticationService {
 
         // Send confirmation token via email
         mailSenderService.sendSimpleMessage(user, confToken);
+    }
+
+    public String encodeUri(String uri){
+        return uri.replaceAll("\\+", "%20");
     }
 }
