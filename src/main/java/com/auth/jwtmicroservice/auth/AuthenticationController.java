@@ -20,8 +20,8 @@ public class AuthenticationController {
      */
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-        AuthenticationResponse response = service.register(request);
-        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, response.getToken()).body(null);
+        service.register(request);
+        return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION).body(null);
     }
 
     /**
@@ -33,6 +33,11 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         AuthenticationResponse response = service.authenticate(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("activateAccount/{token}")
+    public ResponseEntity<String> activateAccount(@PathVariable String token){
+        return ResponseEntity.ok(service.activateAccount(token));
     }
 
 }
