@@ -60,7 +60,7 @@ public class MailSenderService {
                 "    <p>We hope you're doing well!</p>\n" +
                 "    <p>Welcome! We hope that our product helps you in your day to day tasks</p>\n" +
                 "    <p><i>To activate your account please click on the following link:</i></p>\n" +
-                "    <p>%s</p>\n" +
+                "    <p><a href=\"%s\">Activate Your Account</a></p>\n" +
                 "    <p>Please do not reply to this message. It is an automatic email.\n" +
                 "    <p>If there is an issue please contact customer support.\n" +
                 "</body>\n" +
