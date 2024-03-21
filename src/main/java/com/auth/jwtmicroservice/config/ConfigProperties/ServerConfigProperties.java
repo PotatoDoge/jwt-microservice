@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "server")
 @Data
-public class ConfigProperties {
+public class ServerConfigProperties {
 
     private String address;
 }
