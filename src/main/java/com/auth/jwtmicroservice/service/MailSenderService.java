@@ -1,7 +1,7 @@
 package com.auth.jwtmicroservice.service;
 
-import com.auth.jwtmicroservice.config.ConfigProperties;
-import com.auth.jwtmicroservice.config.FrontendConfigProperties;
+import com.auth.jwtmicroservice.config.ConfigProperties.ConfigProperties;
+import com.auth.jwtmicroservice.config.ConfigProperties.FrontendConfigProperties;
 import com.auth.jwtmicroservice.entity.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

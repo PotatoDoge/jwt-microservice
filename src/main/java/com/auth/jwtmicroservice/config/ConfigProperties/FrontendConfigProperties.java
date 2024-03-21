@@ -1,4 +1,4 @@
-package com.auth.jwtmicroservice.config;
+package com.auth.jwtmicroservice.config.ConfigProperties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,26 +1,21 @@
 package com.auth.jwtmicroservice.auth;
 
-import com.auth.jwtmicroservice.config.AccountConfigProperties;
+import com.auth.jwtmicroservice.config.ConfigProperties.AccountConfigProperties;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;
-import com.auth.jwtmicroservice.response.exception.NotFoundInDatabase;
 import com.auth.jwtmicroservice.response.exception.UnauthorizedUser;
 import com.auth.jwtmicroservice.response.exception.ValueExistsInDatabase;
 import com.auth.jwtmicroservice.service.ConfirmationTokenService;
 import com.auth.jwtmicroservice.service.MailSenderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;

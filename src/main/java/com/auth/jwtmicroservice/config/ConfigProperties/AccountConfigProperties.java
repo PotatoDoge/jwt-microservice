@@ -1,4 +1,4 @@
-package com.auth.jwtmicroservice.config;
+package com.auth.jwtmicroservice.config.ConfigProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
