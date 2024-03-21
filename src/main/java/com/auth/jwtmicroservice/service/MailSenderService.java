@@ -1,13 +1,13 @@
 package com.auth.jwtmicroservice.service;
 
 import com.auth.jwtmicroservice.config.ConfigProperties;
+import com.auth.jwtmicroservice.config.FrontendConfigProperties;
 import com.auth.jwtmicroservice.entity.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class MailSenderService {
 
     private ConfigProperties configProperties;
+    private FrontendConfigProperties frontendConfigProperties;
 
     private JavaMailSender emailSender;
 
@@ -36,8 +37,8 @@ public class MailSenderService {
 
         try {
 
-            String url = "http://"+configProperties.getAddress() +":"+port+"/v1/auth/activateAccount/"+confirmationToken;
-
+            //String url = "http://"+configProperties.getAddress() +":"+port+"/v1/auth/activateAccount/"+confirmationToken;
+            String url = frontendConfigProperties.getTokenValidationScreen() + "?confirmation-token=" + confirmationToken;
             helper.setTo(registeredUser.getEmail());
             helper.setSubject("Verify your account!");
             helper.setText(buildEmailTemplate(registeredUser.getFullName(), url), true);

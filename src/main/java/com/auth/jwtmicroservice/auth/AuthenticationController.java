@@ -3,12 +3,11 @@ package com.auth.jwtmicroservice.auth;
 import com.auth.jwtmicroservice.config.FrontendConfigProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("auth")
@@ -43,11 +42,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("activateAccount/{token}")
-    public ResponseEntity<Void> activateAccount(@PathVariable String token){
+    public ResponseEntity<Map<String,String>> activateAccount(@PathVariable String token){
         String confirmationTokenResponse = service.activateAccount(token);
-        String redirectTo = frontendConfigProperties.getTokenValidationScreen() + "?confirmation-message="+ confirmationTokenResponse;
-        redirectTo = service.encodeUri(redirectTo);
-        return ResponseEntity.status(HttpStatus.FOUND).header("Location", redirectTo).build();
+        Map<String, String> response = new HashMap<>();
+        response.put("message", confirmationTokenResponse);
+        return ResponseEntity.ok(response);
     }
 
 }
