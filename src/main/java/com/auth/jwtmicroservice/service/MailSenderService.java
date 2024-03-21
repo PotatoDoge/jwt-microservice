@@ -36,7 +36,7 @@ public class MailSenderService {
 
         try {
 
-            String url = "http://"+configProperties.getAddress() +":"+port+"/"+confirmationToken;
+            String url = "http://"+configProperties.getAddress() +":"+port+"/v1/auth/activateAccount/"+confirmationToken;
 
             helper.setTo(registeredUser.getEmail());
             helper.setSubject("Verify your account!");
