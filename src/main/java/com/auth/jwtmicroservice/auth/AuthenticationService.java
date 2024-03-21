@@ -59,12 +59,7 @@ public class AuthenticationService {
         }
 
         repository.save(user);
-        String confToken = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(validationTokenDurationInMinutes), user);
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
-
-        // Send confirmation token via email
-        mailSenderService.sendSimpleMessage(user, confToken);
+        sendToken(user);
     }
 
     /**
@@ -77,18 +72,21 @@ public class AuthenticationService {
 
         User user = repository.findByEmail(request.getEmail()).orElse(null);
 
-        if(Objects.isNull(user)){
+        if (Objects.isNull(user)) {
             throw new UnauthorizedUser("Not a valid email or password");
         }
 
-        if(!user.isEnabled()){
-           throw new UnauthorizedUser("Email registered but account is not enabled!");
+        if (!user.isEnabled()) {
+            boolean validToken = confirmationTokenService.validateIfLastTokenIsValidByUserId(user);
+            if(!validToken){
+                sendToken(user);
+            }
+            throw new UnauthorizedUser("Email registered but account is not enabled!");
         }
 
-        try{
+        try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new UnauthorizedUser("Not a valid email or password");
         }
 
@@ -114,7 +112,7 @@ public class AuthenticationService {
     public String activateAccount(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token).orElse(null);
 
-        if(confirmationToken == null){
+        if (confirmationToken == null) {
             return "Token not found";
         }
 
@@ -133,4 +131,12 @@ public class AuthenticationService {
         return "Account activated!";
     }
 
+    private void sendToken(User user){
+        String confToken = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(validationTokenDurationInMinutes), user);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        // Send confirmation token via email
+        mailSenderService.sendSimpleMessage(user, confToken);
+    }
 }

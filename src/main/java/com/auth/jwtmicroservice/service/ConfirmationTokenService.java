@@ -1,6 +1,7 @@
 package com.auth.jwtmicroservice.service;
 
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
+import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,14 @@ public class ConfirmationTokenService {
     public void setConfirmedAt(String token) {
         confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
+    }
+
+    public boolean validateIfLastTokenIsValidByUserId(User user){
+        ConfirmationToken confirmationToken = confirmationTokenRepository.findLatestTokenByUser(user).orElse(null);
+        if(confirmationToken == null){
+            return false;
+        }
+        return LocalDateTime.now().isBefore(confirmationToken.getExpiresAt());
     }
 
 }
