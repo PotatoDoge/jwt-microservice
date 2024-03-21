@@ -4,6 +4,8 @@ import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;
+import com.auth.jwtmicroservice.response.exception.NotFoundInDatabase;
+import com.auth.jwtmicroservice.response.exception.UnauthorizedUser;
 import com.auth.jwtmicroservice.response.exception.ValueExistsInDatabase;
 import com.auth.jwtmicroservice.service.ConfirmationTokenService;
 import com.auth.jwtmicroservice.service.MailSenderService;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -71,8 +74,24 @@ public class AuthenticationService {
      * @return jwt based on existing user
      */
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        User user = repository.findByEmail(request.getEmail()).orElseThrow();
+
+        User user = repository.findByEmail(request.getEmail()).orElse(null);
+
+        if(Objects.isNull(user)){
+            throw new UnauthorizedUser("Not a valid email or password");
+        }
+
+        if(!user.isEnabled()){
+           throw new UnauthorizedUser("Email registered but account is not enabled!");
+        }
+
+        try{
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+        }
+        catch (Exception e){
+            throw new UnauthorizedUser("Not a valid email or password");
+        }
+
         String token = jwtService.generateToken(user, user.getId());
         return new AuthenticationResponse(token);
     }

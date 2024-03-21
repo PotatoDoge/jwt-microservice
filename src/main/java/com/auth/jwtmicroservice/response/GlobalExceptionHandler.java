@@ -49,13 +49,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedUser.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<HttpResponse> handleUnauthorizedUser(UnauthorizedUser ex) {
         HttpResponse response = HttpResponse.builder()
                 .timestamp(now().toString())
                 .message(ex.getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
     @ExceptionHandler(ValueExistsInDatabase.class)
