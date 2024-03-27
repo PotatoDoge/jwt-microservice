@@ -15,8 +15,6 @@ import java.util.Map;
 @CrossOrigin
 public class AuthenticationController {
 
-    private final FrontendConfigProperties frontendConfigProperties;
-
     private final AuthenticationService service;
 
     /**
