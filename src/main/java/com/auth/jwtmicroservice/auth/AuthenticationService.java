@@ -133,8 +133,4 @@ public class AuthenticationService {
         // Send confirmation token via email
         mailSenderService.sendSimpleMessage(user, confToken);
     }
-
-    public String encodeUri(String uri){
-        return uri.replaceAll("\\+", "%20");
-    }
 }
