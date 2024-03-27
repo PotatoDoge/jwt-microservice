@@ -1,7 +1,7 @@
 package com.auth.jwtmicroservice.service;
 
-import com.auth.jwtmicroservice.config.ConfigProperties;
-import com.auth.jwtmicroservice.config.FrontendConfigProperties;
+import com.auth.jwtmicroservice.config.ConfigProperties.ServerConfigProperties;
+import com.auth.jwtmicroservice.config.ConfigProperties.FrontendConfigProperties;
 import com.auth.jwtmicroservice.entity.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -35,7 +35,6 @@ public class MailSenderService {
         }
 
         try {
-
             String url = frontendConfigProperties.getTokenValidationScreen() + "?confirmation-token=" + confirmationToken;
             helper.setTo(registeredUser.getEmail());
             helper.setSubject("Verify your account!");

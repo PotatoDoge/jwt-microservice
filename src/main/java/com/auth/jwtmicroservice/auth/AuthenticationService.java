@@ -1,25 +1,21 @@
 package com.auth.jwtmicroservice.auth;
 
+import com.auth.jwtmicroservice.config.ConfigProperties.AccountConfigProperties;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;
-import com.auth.jwtmicroservice.response.exception.NotFoundInDatabase;
 import com.auth.jwtmicroservice.response.exception.UnauthorizedUser;
 import com.auth.jwtmicroservice.response.exception.ValueExistsInDatabase;
 import com.auth.jwtmicroservice.service.ConfirmationTokenService;
 import com.auth.jwtmicroservice.service.MailSenderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -28,12 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    @Value("${account.email.validation}")
-    private boolean sendEmailValidation;
-
-    @Value("${account.validation-token-duration-in-minutes}")
-    private int validationTokenDurationInMinutes;
-
+    private final AccountConfigProperties accountConfigProperties;
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -55,7 +46,7 @@ public class AuthenticationService {
         }
 
         //Confirmation token disabled
-        if (!sendEmailValidation) {
+        if (!accountConfigProperties.isEmailValidation()) {
             user.setEnabled(true);
             repository.save(user);
             return;
@@ -136,7 +127,7 @@ public class AuthenticationService {
 
     private void sendToken(User user){
         String confToken = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(validationTokenDurationInMinutes), user);
+        ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(accountConfigProperties.getValidationTokenDurationInMinutes()), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         // Send confirmation token via email

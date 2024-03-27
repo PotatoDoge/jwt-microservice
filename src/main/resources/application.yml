@@ -33,8 +33,7 @@ jwt:
   secret-key: "VGhpcyBpcyB0aGUgc2VjcmV0IGtleSB0aGF0IEkgd2FudCB0byBlbmNvZGUuIFBvbmVybGUgdW4gcG9jbyBkZSBzZWd1cmlkYWQgZW4gZXNwYcOxb2wgeSB1bm9zIGN1YW50b3MgbsO6bWVyb3MgY29tbyAxLDQ1LDMuMSw2LjcsOTksNzM0LjI4"
 
 account:
-  email:
-    validation: false
+  email-validation: false
   validation-token-duration-in-minutes: 10
 
 frontend:

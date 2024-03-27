@@ -1,10 +1,12 @@
 package com.auth.jwtmicroservice.config;
 
+import com.auth.jwtmicroservice.config.ConfigProperties.JwtConfigProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +19,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@AllArgsConstructor
 public class JwtService {
 
-    @Value("${jwt.secret-key}")
-    private String SECRET_KEY;
+    private final JwtConfigProperties jwtConfigProperties;
 
     /**
      * Extras username from token
@@ -48,7 +50,7 @@ public class JwtService {
      * @return signing key
      */
     private Key getSigningKey() {
-        byte[] keyBites = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBites = Decoders.BASE64.decode(jwtConfigProperties.getSecretKey());
         return Keys.hmacShaKeyFor(keyBites);
     }
 
