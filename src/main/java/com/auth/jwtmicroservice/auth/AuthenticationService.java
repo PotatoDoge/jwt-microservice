@@ -3,15 +3,19 @@ package com.auth.jwtmicroservice.auth;
 import com.auth.jwtmicroservice.config.ConfigProperties.AccountConfigProperties;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
+import com.auth.jwtmicroservice.entity.dto.ChangePasswordDTO;
 import com.auth.jwtmicroservice.entity.dto.ResetPasswordDTO;
 import com.auth.jwtmicroservice.entity.ResetPasswordToken;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;
+import com.auth.jwtmicroservice.response.exception.NotFoundInDatabase;
 import com.auth.jwtmicroservice.response.exception.UnauthorizedUser;
 import com.auth.jwtmicroservice.response.exception.ValueExistsInDatabase;
+import com.auth.jwtmicroservice.service.ChangePasswordService;
 import com.auth.jwtmicroservice.service.ConfirmationTokenService;
 import com.auth.jwtmicroservice.service.MailSenderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +37,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
     private final MailSenderService mailSenderService;
+    private final ChangePasswordService changePasswordService;
+    private final UserRepository userRepository;
 
     /**
      * Registers new user
@@ -143,7 +149,34 @@ public class AuthenticationService {
         }
         String resetToken = UUID.randomUUID().toString();
         ResetPasswordToken resetPasswordToken = new ResetPasswordToken(resetToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(accountConfigProperties.getValidationTokenDurationInMinutes()), user);
+        changePasswordService.save(resetPasswordToken);
         mailSenderService.sendResetPasswordMail(resetPasswordToken);
         return "Email sent!";
+    }
+
+    public String changePassword(ChangePasswordDTO changePasswordDTO) {
+        ResetPasswordToken resetPasswordToken = changePasswordService.getToken(changePasswordDTO.getToken()).orElse(null);
+        if(resetPasswordToken == null) {
+            throw new NotFoundInDatabase("Reset password token not found");
+        }
+
+        if (resetPasswordToken.getConfirmedAt() != null) {
+            throw new ValueExistsInDatabase("Token already used");
+        }
+
+        LocalDateTime expiredAt = resetPasswordToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new ValueExistsInDatabase("Token expired");
+        }
+
+        changePasswordService.setConfirmedAt(changePasswordDTO.getToken());
+
+        User user = resetPasswordToken.getUser();
+
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        userRepository.save(user);
+
+        return "New password set";
     }
 }
