@@ -37,4 +37,4 @@ account:
 
 frontend:
   token-validation-screen: http://localhost:4200/landing-page
-  password-reset-screen: http://localhost:4200/reset-password #poner url de revalidacion de password
+  password-reset-screen: http://localhost:4200/reset-password

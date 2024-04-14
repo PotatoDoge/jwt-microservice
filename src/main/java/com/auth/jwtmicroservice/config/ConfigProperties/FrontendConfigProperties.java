@@ -10,5 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class FrontendConfigProperties {
 
     private String tokenValidationScreen;
+    private String passwordResetScreen;
 
 }

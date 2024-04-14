@@ -1,6 +1,7 @@
 package com.auth.jwtmicroservice.auth;
 
 import com.auth.jwtmicroservice.config.ConfigProperties.FrontendConfigProperties;
+import com.auth.jwtmicroservice.entity.ResetPasswordDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,13 @@ public class AuthenticationController {
         Map<String, String> response = new HashMap<>();
         response.put("message", confirmationTokenResponse);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("resetPassword")
+    public ResponseEntity<Map<String,String>> sendResetPasswordEmail(@RequestBody ResetPasswordDTO resetPasswordDTO){
+        Map<String, String> response = new HashMap<>();
+        response.put("message", service.sendResetPasswordMail(resetPasswordDTO));
+        return ResponseEntity.ok().body(response);
     }
 
 }

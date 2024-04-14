@@ -3,6 +3,8 @@ package com.auth.jwtmicroservice.auth;
 import com.auth.jwtmicroservice.config.ConfigProperties.AccountConfigProperties;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
+import com.auth.jwtmicroservice.entity.ResetPasswordDTO;
+import com.auth.jwtmicroservice.entity.ResetPasswordToken;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;
 import com.auth.jwtmicroservice.response.exception.UnauthorizedUser;
@@ -72,7 +74,7 @@ public class AuthenticationService {
 
         if (!user.isEnabled()) {
             boolean validToken = confirmationTokenService.validateIfLastTokenIsValidByUserId(user);
-            if(!validToken){
+            if (!validToken) {
                 sendToken(user);
             }
             throw new UnauthorizedUser("Email registered but account is not enabled!");
@@ -125,12 +127,23 @@ public class AuthenticationService {
         return "Account activated!";
     }
 
-    private void sendToken(User user){
+    private void sendToken(User user) {
         String confToken = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(confToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(accountConfigProperties.getValidationTokenDurationInMinutes()), user);
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         // Send confirmation token via email
         mailSenderService.sendSimpleMessage(user, confToken);
+    }
+
+    public String sendResetPasswordMail(ResetPasswordDTO resetPasswordDTO) {
+        User user = repository.findByEmail(resetPasswordDTO.getEmail()).orElse(null);
+        if (user == null) {
+            throw new UnauthorizedUser("Not a valid email");
+        }
+        String resetToken = UUID.randomUUID().toString();
+        ResetPasswordToken resetPasswordToken = new ResetPasswordToken(resetToken, LocalDateTime.now(), LocalDateTime.now().plusMinutes(accountConfigProperties.getValidationTokenDurationInMinutes()), user);
+        mailSenderService.sendResetPasswordMail(resetPasswordToken);
+        return "Email sent!";
     }
 }
