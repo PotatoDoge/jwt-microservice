@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${db-url:jdbc:postgresql://localhost:5432/central_database} # change postgres for the correct IP if running this app in a docker container or directly in your local env
-    username: ${db-username:postgres} # super user
-    password: ${db-password:postgres}
+    url: jdbc:postgresql://localhost:5432/central_database # change postgres for the correct IP if running this app in a docker container or directly in your local env
+    username: postgres # super user
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -25,7 +25,6 @@ spring:
           starttls:
             enable: true
 server:
-  address: your_ip_address
   servlet:
     context-path: /v1
 
@@ -37,5 +36,5 @@ account:
   validation-token-duration-in-minutes: 10
 
 frontend:
-  token-validation: your_frontend_url
-  redirect: false #if true, this will redirect you to your frontend specified page
+  token-validation-screen: http://localhost:4200/landing-page
+  password-reset-screen: http://localhost:4200/reset-password #poner url de revalidacion de password
