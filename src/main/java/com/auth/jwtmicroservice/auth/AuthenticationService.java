@@ -3,7 +3,7 @@ package com.auth.jwtmicroservice.auth;
 import com.auth.jwtmicroservice.config.ConfigProperties.AccountConfigProperties;
 import com.auth.jwtmicroservice.config.JwtService;
 import com.auth.jwtmicroservice.entity.ConfirmationToken;
-import com.auth.jwtmicroservice.entity.ResetPasswordDTO;
+import com.auth.jwtmicroservice.entity.dto.ResetPasswordDTO;
 import com.auth.jwtmicroservice.entity.ResetPasswordToken;
 import com.auth.jwtmicroservice.entity.User;
 import com.auth.jwtmicroservice.repository.UserRepository;

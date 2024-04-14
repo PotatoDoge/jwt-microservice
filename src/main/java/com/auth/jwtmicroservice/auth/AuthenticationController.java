@@ -1,7 +1,6 @@
 package com.auth.jwtmicroservice.auth;
 
-import com.auth.jwtmicroservice.config.ConfigProperties.FrontendConfigProperties;
-import com.auth.jwtmicroservice.entity.ResetPasswordDTO;
+import com.auth.jwtmicroservice.entity.dto.ResetPasswordDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

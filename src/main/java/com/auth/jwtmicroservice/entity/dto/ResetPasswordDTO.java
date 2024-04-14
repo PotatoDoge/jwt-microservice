@@ -1,4 +1,4 @@
-package com.auth.jwtmicroservice.entity;
+package com.auth.jwtmicroservice.entity.dto;
 
 import lombok.Data;
 
