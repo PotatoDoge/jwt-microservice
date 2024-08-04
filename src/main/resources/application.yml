@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: ${db-url:jdbc:postgresql://localhost:5432/central_database} # change postgres for the correct IP if running this app in a docker container or directly in your local env
-    username: ${db-username:postgres} # super user
+    url: ${db-url}
+    username: ${db-username:postgres}
     password: ${db-password:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:

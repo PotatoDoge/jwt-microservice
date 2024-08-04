@@ -8,12 +8,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - db-url=jdbc:postgresql://postgres-central-db:5432/central_database
+      - db-url=jdbc:postgresql://db:5432/central_database
       - db-username=postgres
       - db-password=postgres
     depends_on:
       - db
     restart: always
+
   db:
     ports:
       - "5432:5432"
@@ -26,6 +27,7 @@ services:
     volumes:
       - /var/lib/docker/volumes/auth-ms-volume/_data:/var/lib/postgresql/data
     restart: always
+
 networks:
   default:
     name: app-ms
