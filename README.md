@@ -67,7 +67,7 @@ Run the following commands:
 
     {
         "email":"test@mail.com",
-        "password":"12345",
+        "password":"12345"
     }
 - No auth
 
