@@ -1,7 +1,7 @@
 
 # JWT Generator
 
-Microservice that is in charge of generating jwts for valid users, as well as registering new users.
+Microservice that is in charge of generating jwts for user validation, as well as registering new users.
 
 Keypoints:
 - Authorization
@@ -12,7 +12,7 @@ Keypoints:
 ## Run Locally
 
 What you will need:
-- Docker (active)
+- Docker (running)
 
 Clone the project
 
@@ -20,16 +20,23 @@ Clone the project
   git clone https://github.com/PotatoDoge/jwt-microservice.git
 ```
 
-Go to the project directory
+Go to project's directory
 
 ```bash
   cd jwt-microservice
 ```
 
-Run spring boot application
-
+Compile the project
 ```bash
-  ./mvnw spring-boot:run
+  ./mvnw clean compile
+```
+
+Note: For the following step, run the database service from the docker compose file. 
+You must have the database up and running to install the project
+
+Install the project
+```bash
+  ./mvnw clean install
 ```
 
 Run the following commands:
@@ -40,6 +47,8 @@ Run the following commands:
 ```
 - This command will create containers for both the database and the jwt microservice
 - 8080 and 5432 (or your own specified ports) must be free in order for this to run correctly
+- In case that you decide to change the ports, double check the application.yml to make sure
+that the same ports are being used
 
 ## Usage/Examples
 
