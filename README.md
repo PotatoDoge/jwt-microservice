@@ -41,6 +41,7 @@ Install the project
 
 Run the following commands:
 ```bash
+    docker network create app-ms
     docker volume create auth-ms-volume
     docker-compose build --no-cache
     docker-compose up -d
