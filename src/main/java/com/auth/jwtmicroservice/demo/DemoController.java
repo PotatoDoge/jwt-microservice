@@ -1,5 +1,6 @@
 package com.auth.jwtmicroservice.demo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @CrossOrigin
 @RequestMapping("demo")
+@Slf4j
 public class DemoController {
 
     /**
@@ -18,6 +20,9 @@ public class DemoController {
      */
     @GetMapping
     public ResponseEntity<?> sayHello(){
+        log.info("logging info from demo controller");
+        log.error("logging error from demo controller");
+        log.warn("logging warn from demo controller");
         return ResponseEntity.ok("Hello world from secure endpoint");
     }
 
