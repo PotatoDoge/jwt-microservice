@@ -29,3 +29,5 @@ public class DemoController {
     }
 
 }
+
+// TODO: Add logs to different classes and levels. --- Run kafka service in the same network
